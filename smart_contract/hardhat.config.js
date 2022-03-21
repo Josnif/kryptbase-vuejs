@@ -1,7 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
 
 
-const ALCHEMY_API_KEY = "1mqxw-OBwSSK9yV-fTK3eHULrFme0WHH";
+const ALCHEMY_API_KEY = "";
 
 const ROPSTEN_PRIVATE_KEY = "";
 
