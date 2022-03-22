@@ -41,18 +41,23 @@ export default {
         const menuItems = [
           {
             id: 1,
-            title: "Marketing",
-            link: "marketing"
+            title: "Home",
+            link: ""
           },
           {
             id: 2,
-            title: "Tutorials",
-            link: "tutorials"
+            title: "Products",
+            link: "products"
           },
           {
             id: 3,
-            title: "Shop",
-            link: "shop"
+            title: "Contact",
+            link: "contact"
+          },
+          {
+            id: 4,
+            title: "Tutorials",
+            link: "tutorials"
           }
         ];
 

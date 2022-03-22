@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full flex md:justify-center justify-between items-center flex-col p-4 gradient-bg-footer">
+    <div class="w-full flex md:justify-center justify-between items-center flex-col p-4">
         <div class="w-full flex sm:flex-row flex-col justify-between items-center my-4">
             <div class="flex flex-[0.5] justify-center items-center">
                 <router-link to="/">
@@ -32,27 +32,13 @@
 <script>
 import { ref } from '@vue/reactivity';
 import { onMounted } from '@vue/runtime-core';
+import { useStore } from 'vuex';
 
 export default {
     setup() {
+        const store = useStore();
         const themeMode = ref(localStorage.getItem('theme'));
-        const menuItems = [
-          {
-            id: 1,
-            title: "Marketing",
-            link: "marketing"
-          },
-          {
-            id: 2,
-            title: "Tutorials",
-            link: "tutorials"
-          },
-          {
-            id: 3,
-            title: "Shop",
-            link: "shop"
-          }
-        ];
+        const menuItems = store.state.menuItems;
 
         // set a global state for the theme mode change instead of the line below
         setInterval(() => {

@@ -1,5 +1,5 @@
 <script setup>
-import { Navbar, Footer } from './components'
+import { HomeNav, Footer } from './components'
 import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue';
 
@@ -20,9 +20,12 @@ console.log(route);
 </script>
 
 <template>
-<div class="min-h-screen">
-  <!-- <Navbar v-if="!isHomepage" /> -->
+<main class="dark:bg-gray-800 bg-white relative overflow-hidden min-h-screen">
+    <HomeNav />
+
   <router-view></router-view>
+
   <Footer />
-</div>
+</main>
+
 </template>

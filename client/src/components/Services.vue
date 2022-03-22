@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col mf:flex-row w-full justify-center items-center gradient-bg-services">
+    <div class="flex flex-col mf:flex-row w-full justify-center items-center ">
             <div class="flex mf:flex-row flex-col items-center justify-between md:p-20 py-12 px-4">
                 <div class="flex-1 flex items-start justify-start flex-col">
                     <h1 class="dark:text-white text-gradient py-2 text-3xl sm:text-5xl ">

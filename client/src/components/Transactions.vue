@@ -1,5 +1,5 @@
 <template> 
-  <div class="flex w-full items-center justify-center 2xl:px-20 gradient-bg-transactions">
+  <div class="flex w-full items-center justify-center 2xl:px-20">
     <div class="flex flex-col md:p-12 py-12 px-4">
       <h3 v-if="currentAccount" class="dark:text-white text-center text-3xl my-2">Latest Transactions</h3>
       <h3 v-else class="dark:text-white text-center text-3xl my-2">Connect your accounts to see your transactions.</h3>
