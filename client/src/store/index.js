@@ -1,34 +1,18 @@
 import { createStore } from 'vuex'
 
+import { account } from './account.module'
+import { products } from './products.module'
+import { cart } from './cart.module'
+
 // Create a new store instance.
 const store = createStore({
+  modules: {
+    account,
+    products,
+    cart
+  },
   state () {
     return {
-        count: 0,
-        contract: '',
-        products: [
-          {
-                name: 'Apple',
-                description: 'An apple a day keeps the doctor away.',
-                price:'0.008',
-                image:'apple.jpg',
-                units: 0
-            },
-            {
-                name:'Orange',
-                description:'Oranges are low in calories and full of nutrients, they promote clear, healthy and skin.',
-                price:'0.019',
-                image:'orange.jpg',
-                units: 0
-            },
-            {
-                name:'Banana',
-                description:'Bananas are one of the most widely consumed fruits in the world for good reason.',
-                price:'0.015',
-                image:'banana.jpg',
-                units: 0
-            }
-        ],
         menuItems: [
             {
               id: 1,
@@ -51,13 +35,17 @@ const store = createStore({
               link: "tutorials"
             }
         ],
-
+        isLoading: false,
     }
   },
-  mutations: {
-    increment (state) {
-      state.count++
-    }
+  getters: {
+    // getFruitStock: (state) => (name) => {
+    //     const product = state.products.filter(() => (item.name==name));
+    //     if (product && product.length > 0) {
+    //         return product;
+    //     }
+    //     return 0;
+    // }
   }
 })
 

@@ -22,9 +22,9 @@ console.log(route);
 <template>
 <main class="dark:bg-gray-800 bg-white relative overflow-hidden min-h-screen">
     <HomeNav />
-
-  <router-view></router-view>
-
+    <div class="dark:bg-gray-800 dark:text-white">
+      <router-view></router-view>
+    </div>
   <Footer />
 </main>
 

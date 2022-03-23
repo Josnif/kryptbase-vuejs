@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-    import { shortenAddress, addressLink } from '../../Utils/formats'
+    import { shortenAddress, addressLink } from '../../Utils'
     defineProps([
         'addressTo', 'addressFrom', 'amount', 'message', 'timestamp'
     ]);
