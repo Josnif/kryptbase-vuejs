@@ -9,17 +9,16 @@
     ">
         <div class="flex flex-col items-center w-full mt-3">
             <div class="w-full mb-6 p-2">
-                <a :href="addressLink(addressFrom)" target="_blank" rel="noopener noreferrer">
-                    <p class="dark:text-white text-base">From: {shortenAddress(addressFrom)}</p>    
+                <a :href="useAddressLink(addressFrom)" target="_blank" rel="noopener noreferrer">
+                    <p class="dark:text-white text-base">From: {{useAddress(addressFrom)}}</p>    
                 </a> 
-                <a :href="addressLink(addressFrom)" target="_blank" rel="noopener noreferrer">
-                    <p class="dark:text-white text-base">To: {{shortenAddress(addressTo)}}</p>    
+                <a :href="useAddressLink(addressFrom)" target="_blank" rel="noopener noreferrer">
+                    <p class="dark:text-white text-base">To: {{useAddress(addressTo)}}</p>    
                 </a> 
                 <p class="dark:text-white text-base">Amount: {{amount}} ETH</p>
                 
                 <br v-if="message" />
                 <p v-if="message" class="dark:text-white text-base">Message: {{message}}</p>
-
 
             </div>
             
@@ -37,10 +36,10 @@
 </template>
 
 <script setup>
-    import { shortenAddress, addressLink } from '../../Utils'
-    defineProps([
-        'addressTo', 'addressFrom', 'amount', 'message', 'timestamp'
-    ]);
+    import { useAddress, useAddressLink } from '../../Utils'
+    defineProps(
+        ['items']
+    );
     const gifUrl = '';
     const dummyGif = 'https://metro.co.uk/wp-content/uploads/2015/05/pokemon_crying.gif?quality=90&strip=all&zoom=1&resize=500%2C284';
 

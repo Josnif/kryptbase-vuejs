@@ -14,12 +14,12 @@
                     Make secured easy and fast transactions across the world with Kryptbase.
                 </p>
                 <div class="flex mt-8">
-                    <a href="#" @click.prevent="connectWallet" class="uppercase py-2 px-4 rounded-lg bg-pink-500 border-2 border-transparent text-white text-md mr-4 hover:bg-pink-400">
+                    <a v-if="!isLoggedIn" href="#" @click.prevent="connectWallet" class="uppercase py-2 px-4 rounded-lg bg-pink-500 border-2 border-transparent text-white text-md mr-4 hover:bg-pink-400">
                         Connect Wallet
                     </a>
-                    <!-- <a href="#" class="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-pink-500 text-pink-500 dark:text-white hover:bg-pink-500 hover:text-white text-md">
-                        Read more
-                    </a> -->
+                    <router-link v-else :to="{ name: 'Products'}" class="uppercase py-2 px-4 rounded-lg bg-transparent border-2 border-pink-500 text-pink-500 dark:text-white hover:bg-pink-500 hover:text-white text-md">
+                        Make Purchase
+                    </router-link>
                 </div>
             </div>
             <div class="flex justify-end flex-col relative">
@@ -32,8 +32,11 @@
                             <!-- <BsInfoCircle fontSize={17} color="#fff" /> -->
                         </div>                        
                         <div>
-                            <p class="dark:text-white font-light text-sm">
-                                <!-- {shortenAddress(currentAccount)} -->
+                            <p v-if="address" class="dark:text-white font-light text-sm">
+                                {{shortenAddress(address)}}
+                            </p>
+                            <p v-else class="dark:text-white font-light text-sm">
+                                address
                             </p>
                             <p class="text-white font-semibold text-lg mt-1">
                                 Ethereum
@@ -76,8 +79,12 @@
 </template>
 
 <script>
+import { ref , computed} from 'vue'
 import { useStore } from 'vuex'
 import { Transactions, Services, Loader } from '../components'
+import { useAddress } from '../Utils'
+
+// const useAddress = shortenAddress();
 
 export default {
     components: {
@@ -85,6 +92,7 @@ export default {
     },
     setup() {
         const store = useStore();
+        const shortenAddress = (address) => useAddress(address);
         const handleChange = (e) => {
             console.log(e);
         }
@@ -93,9 +101,11 @@ export default {
         const connectWallet = () => {
             store.dispatch('setLogin');
         }
+        const isLoggedIn = computed(() => store.state.account.isLoggedIn);
+        const address = computed(() => store.state.account.address);
 
         return {
-            handleChange, isLoading, connectWallet
+            handleChange, isLoading, connectWallet, isLoggedIn, address, shortenAddress,
         }
     }
 }

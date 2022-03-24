@@ -1,7 +1,5 @@
-import Web3 from "web3";
+import Web3 from "web3/dist/web3.min.js";
 import Web3Modal from "web3modal";
-
-// import { getAddressBalance } from "../Utils"
 
 const providerOptions = {};
 const web3Modal = new Web3Modal({
@@ -11,15 +9,45 @@ const web3Modal = new Web3Modal({
 
 let provider = null;
 
+export const resolve = (data, callback) => {
+    const p = Promise.resolve(data).then(callback);
+    return p;
+};
+
 export const authService = {
     login: async () => {
         if (window.ethereum) {
             provider = await web3Modal.connect();
             const web3 = new Web3(provider);
             const accounts = web3.eth.getAccounts();
-            localStorage.setItem('AUTH_TOKEN', accounts[0]);
 
-            return Promise.resolve()
+            resolve(accounts, (item) => {
+                localStorage.setItem('AUTH_TOKEN', item[0]);
+                return item[0];
+            });
+
+            return Promise.resolve();
+        } else {
+            return Promise.reject(
+                new Error(
+                    "No Ethereum wallet found. Please install metamask to continue."
+                )
+            )
+        }
+    },
+    refreshAccount: async () => {
+        const data = {};
+        if (window.ethereum) {
+            const web3 = new Web3(window.ethereum);
+            const accounts = await web3.eth.getAccounts();
+            
+            const acct = resolve(accounts, (item) => {
+                localStorage.setItem('AUTH_TOKEN', item[0]);
+                return item[0];
+            });
+
+            return acct;
+
         } else {
             return Promise.reject(
                 new Error(
@@ -30,8 +58,8 @@ export const authService = {
     },
     logout: async () => {
         localStorage.removeItem('AUTH_TOKEN');
-        if (provider && provider.close) {
-            await provider.close;
+        if (provider && provider.disconnect) {
+            await provider.disconnect;
 
             provider = null;
             await web3Modal.clearCachedProvider();
@@ -41,23 +69,36 @@ export const authService = {
     },
     checkAuth: () => {
         const token = localStorage.getItem('AUTH_TOKEN');
-        if (token) {
-            return Promise.resolve();
+        if (token && token !== 'undefined' && typeof token !== 'undefined') {
+            return true;
         } else {
-            return Promise.reject();
+            return false;
         }
     },
     checkPermission: async () => Promise.resolve(),
     getUser: async () => {
         const token = localStorage.getItem('AUTH_TOKEN');
         if (token) {
-            // const balance = await getAddressBalance(token);
+            const balance = await getAddressBalance(token);
             return Promise.resolve({
                 address: token,
-                // balance: balance,
+                balance: balance,
             })
         } else {
             return Promise.reject();
         }
     }
+}
+
+const getAddressBalance = async (address) => {
+    return new Promise((resolve, reject) => {
+        const web3 = new Web3(window.ethereum);
+        web3.eth.getBalance(address, (err, result) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(web3.utils.fromWei(result, 'ether'));
+            }
+        })
+    });
 }

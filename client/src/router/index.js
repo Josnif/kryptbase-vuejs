@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
-
+import store from '../store'
 import Home from '../pages/Home.vue'
 import Products from '../pages/Products.vue'
 import Tutorials from '../pages/Tutorials.vue'
@@ -10,7 +10,7 @@ const routes = [
     { name: 'Marketing', path: '/marketing', component: Home },
     { name: 'Tutorial', path: '/tutorials', component: Tutorials },
     { name: 'Contact', path: '/contact', component: Tutorials },
-    { name: 'Products', path: '/products', component: Products },
+    { name: 'Products', path: '/products', component: Products, meta: { requiresLogin: true } },
     { name: 'not-found', path:'/:pathMatch(.*)*', component: NotFound},
     { name: 'bad-not-found', path: '/:pathMatch(.*)', component: NotFound },
 ]
@@ -21,16 +21,13 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-    const publicPages = [
-        '/login', '/register'
-    ];
-    const authRequired = !publicPages.includes(to.path);
-    const loggedIn = localStorage.getItem('AUTH_TOKEN');
-
-    if (authRequired && false) {
-        return next('/login');
+    const token = localStorage.getItem('AUTH_TOKEN');
+    if (to.matched.some(record => record.meta.requiresLogin) && (token === null || token === "undefined")) {
+        store.dispatch('setLogin');
+        next(false);
+    } else {
+        next();
     }
-    next();
 });
 
 // bad example if using named routes:

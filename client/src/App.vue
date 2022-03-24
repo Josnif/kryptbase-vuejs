@@ -2,11 +2,17 @@
 import { HomeNav, Footer } from './components'
 import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const route = useRouter().currentRoute.value;
-console.log(route);
-// const isHomepage = ref(true);
 
+const refreshToken = () => {
+  store.dispatch('refreshToken');
+}
+refreshToken();
+
+// const isHomepage = ref(true);
 // watch(
 //   () => route,
 //   (newValue, oldValue) => {
@@ -15,7 +21,8 @@ console.log(route);
 //     console.log(route.name);
 //   },
 //   { deep: true }
-// )
+// }
+
 
 </script>
 
