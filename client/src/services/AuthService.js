@@ -17,16 +17,24 @@ export const resolve = (data, callback) => {
 export const authService = {
     login: async () => {
         if (window.ethereum) {
-            provider = await web3Modal.connect();
-            const web3 = new Web3(provider);
-            const accounts = web3.eth.getAccounts();
-
-            resolve(accounts, (item) => {
-                localStorage.setItem('AUTH_TOKEN', item[0]);
-                return item[0];
-            });
-
-            return Promise.resolve();
+            try {
+                provider = await web3Modal.connect();
+                const web3 = new Web3(provider);
+                const accounts = web3.eth.getAccounts();
+    
+                resolve(accounts, (item) => {
+                    localStorage.setItem('AUTH_TOKEN', item[0]);
+                    return item[0];
+                });
+    
+                return Promise.resolve();
+            } catch (error) {
+                return Promise.reject(
+                    new Error(
+                        "Connection failed: " + error
+                    )
+                )
+            }
         } else {
             return Promise.reject(
                 new Error(
@@ -38,15 +46,24 @@ export const authService = {
     refreshAccount: async () => {
         const data = {};
         if (window.ethereum) {
-            const web3 = new Web3(window.ethereum);
-            const accounts = await web3.eth.getAccounts();
-            
-            const acct = resolve(accounts, (item) => {
-                localStorage.setItem('AUTH_TOKEN', item[0]);
-                return item[0];
-            });
+            try {
+                const web3 = new Web3(window.ethereum);
+                const accounts = await web3.eth.getAccounts();
 
-            return acct;
+                if (accounts && accounts.length > 0) {
+                    const acct = resolve(accounts, (item) => {
+                        localStorage.setItem('AUTH_TOKEN', item[0]);
+                        return item[0];
+                    });
+                    return acct;
+                } else {
+                    return false;
+                }
+                
+            } catch (error) {
+                localStorage.removeItem('AUTH_TOKEN');
+                return new Error(error);
+            }
 
         } else {
             return Promise.reject(
@@ -83,7 +100,7 @@ export const authService = {
             return Promise.resolve({
                 address: token,
                 balance: balance,
-            })
+            });
         } else {
             return Promise.reject();
         }

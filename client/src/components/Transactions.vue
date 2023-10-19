@@ -25,7 +25,8 @@ export default {
   setup() {
     const store = useStore();
     const currentAccount = computed(() => store.state.account.address);
-    const transactions = ref([]);
+    // store.dispatch('getAllTransactions');
+    const transactions = computed(() => store.state.transactions.items)
 
 
     return {
